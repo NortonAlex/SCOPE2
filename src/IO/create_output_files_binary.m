@@ -22,6 +22,7 @@ fprintf(fidpath,'%s', path_of_code);
 %% Filenames, will become .csv if options is on
 
 fnames.pars_file               = fullfile(Output_dir,'pars_and_input_short.bin');
+fnames.apar_file               = fullfile(Output_dir,'aPAR.bin');
 fnames.veg_file                = fullfile(Output_dir,'vegetation.bin');
 fnames.flu_file                = fullfile(Output_dir,'fluxes.bin');
 fnames.rad_file                = fullfile(Output_dir,'radiation.bin');
@@ -41,6 +42,7 @@ fnames.Eout_file               = fullfile(Output_dir,'Eout_spectrum.bin');
 fnames.Lo_file                 = fullfile(Output_dir,'Lo_spectrum.bin');
 fnames.Esun_file               = fullfile(Output_dir,'Esun.bin');
 fnames.Esky_file               = fullfile(Output_dir,'Esky.bin');
+fnames.resist_file             = fullfile(Output_dir,'resistances.bin');
 
 %% Open files for writing
 f = structfun(@(x) fopen(x, 'w'), fnames, 'UniformOutput',false);
