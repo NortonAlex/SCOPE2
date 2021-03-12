@@ -13,7 +13,7 @@ if isdatetime(xyt.t)
 end
 
 %% Vegetation products
-apar_out= [k xyt.year(k) xyt.t(k) canopy.LAIsunlit  canopy.LAIshaded...
+apar_out= [k xyt.year(k) xyt.t(k)  rad.PAR*1E6 rad.EPAR canopy.LAIsunlit  canopy.LAIshaded...
     canopy.Pntot     canopy.Pnsun     canopy.Pnsha ...
     canopy.Pntot_Cab canopy.Pnsun_Cab canopy.Pnsha_Cab ...
     canopy.Pntot_Car canopy.Pnsun_Car canopy.Pnsha_Car ...
@@ -23,7 +23,7 @@ apar_out= [k xyt.year(k) xyt.t(k) canopy.LAIsunlit  canopy.LAIshaded...
 n_col.apar = length(apar_out);
 fwrite(f.apar_file,apar_out,'double');
 
-veg_out = [k xyt.year(k) xyt.t(k) canopy.A canopy.Ja canopy.ENPQ canopy.LST];
+veg_out = [k xyt.year(k) xyt.t(k) canopy.A canopy.Ja canopy.ENPQ  canopy.PNPQ canopy.fqe canopy.LST];
 n_col.veg = length(veg_out);
 fwrite(f.veg_file,veg_out,'double');
 
@@ -52,6 +52,9 @@ if options.calc_fluor
     
     n_col.sigmaF = length(rad.sigmaF);
     fwrite(f.sigmaF_file, rad.sigmaF, 'double');
+    
+    n_col.fRC = length(rad.EoutFrc_);
+    fwrite(f.fRC_file, rad.EoutFrc_, 'double');
     
     n_col.fhemis = length(rad.EoutF_);
     fwrite(f.fhemis_file,rad.EoutF_, 'double');

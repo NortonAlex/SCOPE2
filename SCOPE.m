@@ -403,11 +403,16 @@ for k = 1:telmax
         
         % computation of re-absorption corrected fluorescence
         % Yang and Van der Tol (2019); Van der Tol et al. (2019)
-        aPAR_Cab_eta    = canopy.LAI*(meanleaf(canopy,bch.eta .* rad.Rnh_Cab,'layers',Ph)+meanleaf(canopy,bcu.eta .* rad.Rnu_Cab,integr,Ps)); %
+        %aPAR_Cab_eta    = canopy.LAI*(meanleaf(canopy,bch.eta .* rad.Rnh_Cab,'layers',Ph)+meanleaf(canopy,bcu.eta .* rad.Rnu_Cab,integr,Ps)); %
+        aPAR_Cab_eta    = canopy.LAI*(meanleaf(canopy,bch.eta .* rad.Pnh_Cab,'layers',Ph)+meanleaf(canopy,bcu.eta .* rad.Pnu_Cab,integr,Ps)); %
         if options.calc_fluor
-            rad.EoutFrc     = leafbio.fqe*aPAR_Cab_eta;
-            rad.EoutFrc_    = 1E3*rad.EoutFrc*optipar.phi(spectral.IwlF);
-            rad.sigmaF      = pi*rad.LoF_./rad.EoutFrc_;
+            ep              = constants.A*ephoton(spectral.wlF'*1E-9,constants);
+            rad.PoutFrc     = leafbio.fqe*aPAR_Cab_eta;
+            rad.EoutFrc_    = 1E-3*ep.*(rad.PoutFrc*optipar.phi(spectral.IwlF)); %1E-6: umol2mol, 1E3: nm-1 to um-1
+            rad.EoutFrc     = 1E-3*Sint(rad.EoutFrc_,spectral.wlF);
+            sigmaF          = pi*rad.LoF_./rad.EoutFrc_;
+            rad.sigmaF      = interp1(spectral.wlF(1:4:end),sigmaF(1:4:end),spectral.wlF);
+            canopy.fqe      = rad.PoutFrc./canopy.Pntot_Cab;
         end
         
         rad.Lotot_      = rad.Lo_+rad.Lot_;
@@ -428,7 +433,6 @@ for k = 1:telmax
         
         %% update input
         if options.simulation==2 && telmax>1, vi  = count_k(nvars,vi,vmax,1); end
-        
     end
 end
 toc
@@ -440,3 +444,4 @@ fclose('all');
 if options.verify
     output_verification_csv(Output_dir, F(9).FileName)
 end
+

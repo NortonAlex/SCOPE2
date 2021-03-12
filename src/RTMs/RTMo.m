@@ -265,7 +265,9 @@ rad.refl(I)  = rso(I);                  % prevents numerical instability in abso
 %% 4. net fluxes, spectral and total, and incoming fluxes
 %4.1 incident PAR at the top of canopy, spectral and spectrally integrated
 P_          = e2phot(wl(Ipar)*1E-9,(Esun_(Ipar)+Esky_(Ipar)),constants);      %
-P           = .001 * Sint(P_,wlPAR);                                % mol m-2s-1
+P           = 0.001 * Sint(P_,wlPAR);                                % mol m-2s-1
+EPAR_       = Esun_(Ipar)+Esky_(Ipar);
+EPAR        = 0.001 * Sint(EPAR_,wlPAR);
 %Psun        = 0.001 * Sint(e2phot(wlPAR*1E-9,Esun_(Ipar),constants),wlPAR);   % Incident solar PAR in PAR units
 % Incident and absorbed solar radiation
 
@@ -324,9 +326,9 @@ for j = 1:nl     % 1 top nl is bottom
     % net radiation (mW m-2 um-1) and net PAR (moles m-2 s-1 um-1), per wavelength
     Rndif_(j,:)         = E_.*epsc(j,:);                                                    % [nl,nwl]  Net (absorbed) radiation by leaves
     Pndif_(j,:)         = .001 *(e2phot(wlPAR*1E-9, Rndif_(j,Ipar)',constants))';                     % [nl,nwl]  Net (absorbed) as PAR photons
-    Rndif_Cab_(j,:)     = .001 *(kChlrel(j,:).*Rndif_(j,spectral.IwlP));    % [nl,nwl]  Net (absorbed) as PAR photons by Cab
+    Rndif_Cab_(j,:)     = (kChlrel(j,:).*Rndif_(j,spectral.IwlP));    % [nl,nwl]  Net (absorbed) as PAR photons by Cab
     Pndif_Cab_(j,:)     = .001 *(e2phot(spectral.wlP*1E-9, (kChlrel(j,:).*Rndif_(j,spectral.IwlP))',constants))';    % [nl,nwl]  Net (absorbed) as PAR photons by Cab
-    Rndif_Car_(j,:)     = .001 *(kCarrel(j,:).*Rndif_(j,spectral.IwlP));    % [nl,nwl]  Net (absorbed) as PAR photons by Car
+    Rndif_Car_(j,:)     = (kCarrel(j,:).*Rndif_(j,spectral.IwlP));    % [nl,nwl]  Net (absorbed) as PAR photons by Car
     Pndif_Car_(j,:)     = .001 *(e2phot(spectral.wlP*1E-9, (kCarrel(j,:).*Rndif_(j,spectral.IwlP))',constants))';    % [nl,nwl]  Net (absorbed) as PAR photons by Car
 
     
@@ -422,7 +424,8 @@ rad.sigf    = sigf;     % forward scatter coefficient for specular flux
 rad.sigb    = sigb;     % backscatter coefficient for specular flux
 rad.Esun_   = Esun_;    % [nwlx1 double]   incident solar spectrum (mW m-2 um-1)
 rad.Esky_   = Esky_;    % [nwlx1 double]   incident sky spectrum (mW m-2 um-1)
-rad.PAR     = P;        % [1 double]        incident spectrally integrated PAR (moles m-2 s-1)
+rad.PAR     = P;        % [1 double]       incident spectrally integrated PAR (moles m-2 s-1)
+rad.EPAR    = EPAR;     % [1 double]       incident PAR in energy units (W m-2)
 rad.Eplu_   = Eplu_;    % [nlxnwl double]  upward diffuse radiation in the canopy (mW m-2 um-1)
 rad.Emin_   = Emin_;    % [nlxnwl double]  downward diffuse radiation in the canopy (mW m-2 um-1)
 rad.Emins_  = Emins_;   % [nlxnwl double]  downward diffuse radiation in the canopy due to direct solar rad (mW m-2 um-1)
