@@ -164,7 +164,7 @@ else
     fVu = fV;
 end
 
-%% 2. Energy balance iteration loop
+%% 2.1 Energy balance iteration loop
 %Energy balance loop (Energy balance and radiative transfer)
 
 while CONT                          % while energy balance does not close
@@ -259,6 +259,12 @@ while CONT                          % while energy balance does not close
     Tch(abs(Tch)>100) = Ta;
     Tcu(abs(Tcu)>100) = Ta;
 end
+
+%% 2.2 emmissivity calculation
+rad     = RTMt_sb(constants,rad,soil,leafbio,canopy,gap,Tcu,Tch,Ts(2),Ts(1),0);
+[blackleaf.tau_thermal,blackleaf.rho_thermal,blacksoil.rs_thermal] = deal(0);
+rad0    = RTMt_sb(constants,rad,blacksoil,blackleaf,canopy,gap,Tcu,Tch,Ts(2),Ts(1),0);
+rad.canopyemis = rad.Eoutte./rad0.Eoutte;
 
 %% 3. Print warnings whenever the energy balance could not be solved
 if counter>=maxit

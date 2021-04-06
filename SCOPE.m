@@ -389,7 +389,8 @@ for k = 1:telmax
         canopy.Rntot_PAR = canopy.Rnsun_PAR+canopy.Rnsha_PAR; % net PAR leaves (radiance)
         
         % LST [K] (directional, but assuming black-body surface!)
-        canopy.LST      = (pi*(rad.Lot+rad.Lote)./(constants.sigmaSB)).^0.25;
+        canopy.LST      = (pi*(rad.Lot+rad.Lote)./(constants.sigmaSB*rad.canopyemis)).^0.25;
+        canopy.emis     = rad.canopyemis;
         
         % photosynthesis [mumol m-2 s-1]
         canopy.A        = canopy.LAI*(meanleaf(canopy,bch.A,'layers',Ph)+meanleaf(canopy,bcu.A,integr,Ps)); % photosynthesis
@@ -419,7 +420,9 @@ for k = 1:telmax
         rad.Eout_       = rad.Eout_+rad.Eoutte_;
         if options.calc_fluor
             rad.Lototf_     = rad.Lotot_;
-            rad.Lototf_(spectral.IwlF') = rad.Lototf_(spectral.IwlF)+rad.LoF_;
+            rad.Lototf_(spectral.IwlF') = rad.Lototf_(spectral.IwlF)+rad.LoF_;            
+            rad.reflapp = rad.refl;
+            rad.reflapp(spectral.IwlF) =pi*rad.Lototf_(spectral.IwlF)./(rad.Esun_(spectral.IwlF)+rad.Esky_(spectral.IwlF));
         end
         
         if options.calc_directional

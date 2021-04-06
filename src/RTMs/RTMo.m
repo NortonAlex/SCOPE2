@@ -260,7 +260,7 @@ rdo         = piLod_./Esky_;            % [nlw] obsir reflectance of sky irradia
 Refl        = piLo_./(Esky_+Esun_);     % [nwl] 
 Refl(Esky_<1E-4) = rso(Esky_<1E-4);     % prevents numerical instability in absorption windows
 I            = find(Esky_<2E-4*max(Esky_));
-rad.refl(I)  = rso(I);                  % prevents numerical instability in absorption windows
+Refl(I)      = rso(I);                  % prevents numerical instability in absorption windows
 
 %% 4. net fluxes, spectral and total, and incoming fluxes
 %4.1 incident PAR at the top of canopy, spectral and spectrally integrated
@@ -424,7 +424,7 @@ rad.sigf    = sigf;     % forward scatter coefficient for specular flux
 rad.sigb    = sigb;     % backscatter coefficient for specular flux
 rad.Esun_   = Esun_;    % [nwlx1 double]   incident solar spectrum (mW m-2 um-1)
 rad.Esky_   = Esky_;    % [nwlx1 double]   incident sky spectrum (mW m-2 um-1)
-rad.PAR     = P;        % [1 double]       incident spectrally integrated PAR (moles m-2 s-1)
+rad.PAR     = P*1E6;    % [1 double]       incident spectrally integrated PAR (micromoles m-2 s-1)
 rad.EPAR    = EPAR;     % [1 double]       incident PAR in energy units (W m-2)
 rad.Eplu_   = Eplu_;    % [nlxnwl double]  upward diffuse radiation in the canopy (mW m-2 um-1)
 rad.Emin_   = Emin_;    % [nlxnwl double]  downward diffuse radiation in the canopy (mW m-2 um-1)

@@ -5,9 +5,27 @@ function biochem_out = biochemical(leafbio,meteo,options,constants,fV)
 % Update:      Aug 2013: correction of L171: Ci = Ci*1e6 ./ p .* 1E3;
 % Update:   2016-10 - (JAK) major rewrite to accomodate an iterative solution to the Ball-Berry equation
 %                   - also allows for g_m to be specified for C3 plants, but only if Ci_input is provided.
+% Update:   25 Feb 2021: Temperature reponse functions by Dutta et al.
+%                       implemented
 % Authors: 	Joe Berry and Christiaan van der Tol, Ari Kornfeld, contributions of others.
 % Sources:
-%           Farquhar et al. 1980, Collatz et al (1991, 1992).
+%           Farquhar et al. 1980, Collatz et al (1991, 1992), and:
+%
+% Dutta, D., Schimel, D. S., Sun, Y., Tol, C. V. D., & Frankenberg, C. (2019). 
+% Optimal inverse estimation of ecosystem parameters from observations of carbon and energy fluxes. 
+% Biogeosciences, 16(1), 77-103.
+%
+% Van der Tol, C., Berry, J. A., Campbell, P. K. E., & Rascher, U. (2014). 
+% Models of fluorescence and photosynthesis for interpreting measurements 
+% of solar?induced chlorophyll fluorescence. 
+% Journal of Geophysical Research: Biogeosciences, 119(12), 2312-2327.
+%
+% Bonan, G. B., Lawrence, P. J., Oleson, K. W., Levis, S., Jung, M., 
+% Reichstein, M., ... & Swenson, S. C. (2011). 
+% Improving canopy processes in the Community Land Model version 4 (CLM4) 
+% using global flux fields empirically inferred from FLUXNET data. 
+% Journal of Geophysical Research: Biogeosciences, 116(G2).
+%
 %
 % This function calculates:
 %    - stomatal resistance of a leaf or needle (s m-1)

@@ -13,7 +13,7 @@ if isdatetime(xyt.t)
 end
 
 %% Vegetation products
-apar_out= [k xyt.year(k) xyt.t(k)  rad.PAR*1E6 rad.EPAR canopy.LAIsunlit  canopy.LAIshaded...
+apar_out= [k xyt.year(k) xyt.t(k)  rad.PAR rad.EPAR canopy.LAIsunlit  canopy.LAIshaded...
     canopy.Pntot     canopy.Pnsun     canopy.Pnsha ...
     canopy.Pntot_Cab canopy.Pnsun_Cab canopy.Pnsha_Cab ...
     canopy.Pntot_Car canopy.Pnsun_Car canopy.Pnsha_Car ...
@@ -23,7 +23,7 @@ apar_out= [k xyt.year(k) xyt.t(k)  rad.PAR*1E6 rad.EPAR canopy.LAIsunlit  canopy
 n_col.apar = length(apar_out);
 fwrite(f.apar_file,apar_out,'double');
 
-veg_out = [k xyt.year(k) xyt.t(k) canopy.A canopy.Ja canopy.ENPQ  canopy.PNPQ canopy.fqe canopy.LST];
+veg_out = [k xyt.year(k) xyt.t(k) canopy.A canopy.Ja canopy.ENPQ  canopy.PNPQ canopy.fqe canopy.LST canopy.emis];
 n_col.veg = length(veg_out);
 fwrite(f.veg_file,veg_out,'double');
 
@@ -61,6 +61,11 @@ if options.calc_fluor
     
     n_col.Lo2 = length(rad.Lototf_);
     fwrite(f.Lo2_file, rad.Lototf_,'double');
+    
+    n_col.rapp = length(rad.reflapp);
+    fwrite(f.rapp_file, rad.reflapp,'double');
+    
+    
 end
 
 %% reflectance

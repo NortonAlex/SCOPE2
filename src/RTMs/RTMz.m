@@ -194,10 +194,8 @@ Fhem_     = sum(Fplu_(1,:,:),3)';
 rad.Lo_(iwlfi)          = rad.Lo_(iwlfi) + sum(LoF_,2);
 rad.rso(iwlfi)          = rad.rso(iwlfi) + LoF_(:,1)./(rad.Esun_(iwlfi));
 rad.rdo(iwlfi)          = rad.rdo(iwlfi) + LoF_(:,2)./(rad.Esky_(iwlfi));
+rad.refl(iwlfi)         = pi*rad.Lo_(iwlfi)./(rad.Esky_(iwlfi)+rad.Esun_(iwlfi));     % [nwl] 
 rad.Eout_(iwlfi)        = rad.Eout_(iwlfi) + Fhem_;
-rad.refl                = rad.rso.*rad.Esun_./(rad.Esky_+rad.Esun_) + rad.rdo.*rad.Esky_./(rad.Esky_+rad.Esun_);     % [nwl] 
-I                       = find(rad.Esky_<2E-4*max(rad.Esky_));
-rad.refl(I)             = rad.rso(I);     % prevents numerical instability in absorption windows
 
 function Cx = Kn2Cx(Kn)
 %Cx = 0.70*Kn;  % empirical fit by N Vilfan
