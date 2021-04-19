@@ -33,6 +33,7 @@ tts_file,
 ,
 "Variables below are COLUMN NAMES in time_series_files (meteo_ec_csv, vegetation_retrieved_csv)",
 t,t
+year,
 Rin,Rin
 Rli,
 p,
